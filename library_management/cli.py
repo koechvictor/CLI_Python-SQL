@@ -1,12 +1,6 @@
 import click
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base, Book, Member, Borrow
-
-DATABASE_URL = "sqlite:///site.db"
-
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+from .database import SessionLocal, init_db
+from .models import Base, Book, Member, Borrow
 
 @click.group()
 def cli():
