@@ -25,6 +25,17 @@ def add_book(title, author_id):
     click.echo(f'Added book {title}.')
 
 @click.command()
+@click.option('--name', prompt='Author name', help='The name of the author.')
+def add_author(name):
+    """Add a new author."""
+    session = SessionLocal()
+    author = Author(name=name)
+    session.add(author)
+    session.commit()
+    session.close()
+    click.echo(f'Added author {name}.')
+
+@click.command()
 @click.option('--book_id', prompt='Book ID', help='The ID of the book to update.')
 @click.option('--title', prompt='New title', help='The new title of the book.')
 @click.option('--author', prompt='New author', help='The new author of the book.')
@@ -44,6 +55,7 @@ def update_book(book_id, title, author):
 
 cli.add_command(init_db)
 cli.add_command(add_book)
+cli.add_command(add_author)
 cli.add_command(update_book)
 
 if __name__ == '__main__':
