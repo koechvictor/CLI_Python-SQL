@@ -7,10 +7,10 @@ def cli():
     pass
 
 @click.command()
-def init_db():
+def init():
     """Initialize the database."""
-    Base.metadata.create_all(bind=engine)
-    click.echo("Database initialized.")
+    init_db()
+    click.echo("Initialized the database.")
 
 @click.command()
 @click.option('--title', prompt='Book title', help='The title of the book.')
@@ -53,7 +53,7 @@ def update_book(book_id, title, author):
         click.echo(f"Book ID {book_id} not found.")
     db.close()
 
-cli.add_command(init_db)
+cli.add_command(init)
 cli.add_command(add_book)
 cli.add_command(add_author)
 cli.add_command(update_book)
