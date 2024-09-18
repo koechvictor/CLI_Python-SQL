@@ -117,6 +117,21 @@ def add_user(name):
     session.close()
     click.echo(f'Added user {name}.')
 
+@click.command()
+@click.option('--user_id', prompt='User ID', help='The ID of the user.')
+@click.option('--name', prompt='New User name', help='The new name of the user.')
+def update_user(user_id, name):
+    """Update a user."""
+    session = SessionLocal()
+    user = session.query(User).filter(User.id == user_id).first()
+    if user:
+        user.name = name
+        session.commit()
+        click.echo(f'Updated user ID {user_id} to name {name}.')
+    else:
+        click.echo(f'User ID {user_id} not found.')
+    session.close()
+
 cli.add_command(init)
 cli.add_command(add_book)
 #cli.add_command(add_author)
@@ -124,6 +139,7 @@ cli.add_command(update_book)
 cli.add_command(report_available_books)
 cli.add_command(delete_book)
 cli.add_command(add_user)
+cli.add_command(update_user)
 
 if __name__ == '__main__':
     cli()
