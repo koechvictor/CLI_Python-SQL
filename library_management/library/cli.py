@@ -10,7 +10,7 @@ def cli():
 def init():
     """Initialize the database."""
     init_db()
-    click.echo("Initialized the database.")
+    click.echo("database Initialized successfully")
 
 @click.command()
 @click.option('--title', prompt='Book title', help='The title of the book.')
@@ -22,45 +22,7 @@ def add_book(title, author_name):
     session.add(book)
     session.commit()
     session.close()
-    click.echo(f'Added book {title} written by {author_name}.')
-
-#@click.command()
-#@click.option('--title', prompt='Book title', help='The title of the book.')
-#@click.option('--author_id', prompt='Author ID', help='The ID of the author.')
-#def add_book(title, author_id):
- #   """Add a new book."""
-  #  session = SessionLocal()
-   # book = Book(title=title, author_id=author_id)
-    #session.add(book)
-    #session.commit()
-    #session.close()
-    #click.echo(f'Added book {title}.')
-
-#@click.command()
-#@click.option('--name', prompt='Author name', help='The name of the author.')
-#def add_author(name):
- #   """Add a new author."""
-  #  session = SessionLocal()
-   # author = Author(name=name)
-    #session.add(author)
-    #session.commit()
-    #session.close()
-    #click.echo(f'Added author {name}.')
-
-#@click.command()
-#@click.option('--book_id', prompt='Book ID', help='The ID of the book.')
-#@click.option('--title', prompt='New Book title', help='The new title of the book.')
-#def update_book(book_id, title):
- #   """Update a book."""
- #   session = SessionLocal()
-  #  book = session.query(Book).filter(Book.id == book_id).first()
-   # if book:
-    #    book.title = title
-     #   session.commit()
-      #  click.echo(f'Updated book ID {book_id} to title {title}.')
-    #else:
-     #   click.echo(f'Book ID {book_id} not found.')
-    #session.close()
+    click.echo(f'Book {title} written by {author_name} added successfully')
 
 @click.command()
 @click.option('--book_id', prompt='Book ID', help='The ID of the book.')
@@ -88,7 +50,7 @@ def delete_book(book_id):
     if book:
         session.delete(book)
         session.commit()
-        click.echo(f'Deleted book ID {book_id} Title: {book.title} written by {book.author_name}.')
+        click.echo(f'Book ID {book_id} Title: {book.title} written by {book.author_name} deleted successfully')
     else:
         click.echo(f'Book ID {book_id} not found.')
     session.close()
@@ -115,7 +77,7 @@ def add_user(name):
     session.add(user)
     session.commit()
     session.close()
-    click.echo(f'Added user {name}.')
+    click.echo(f'User {name} added successfully')
 
 @click.command()
 @click.option('--user_id', prompt='User ID', help='The ID of the user.')
@@ -141,7 +103,7 @@ def delete_user(user_id):
     if user:
         session.delete(user)
         session.commit()
-        click.echo(f'Deleted user ID {user_id}.')
+        click.echo(f'User ID {user_id}, Name:{user.name} deleted successfully')
     else:
         click.echo(f'User ID {user_id} not found.')
     session.close()
