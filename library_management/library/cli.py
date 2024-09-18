@@ -132,6 +132,20 @@ def update_user(user_id, name):
         click.echo(f'User ID {user_id} not found.')
     session.close()
 
+@click.command()
+@click.option('--user_id', prompt='User ID', help='The ID of the user.')
+def delete_user(user_id):
+    """Delete a user."""
+    session = SessionLocal()
+    user = session.query(User).filter(User.id == user_id).first()
+    if user:
+        session.delete(user)
+        session.commit()
+        click.echo(f'Deleted user ID {user_id}.')
+    else:
+        click.echo(f'User ID {user_id} not found.')
+    session.close()
+
 cli.add_command(init)
 cli.add_command(add_book)
 #cli.add_command(add_author)
@@ -140,6 +154,7 @@ cli.add_command(report_available_books)
 cli.add_command(delete_book)
 cli.add_command(add_user)
 cli.add_command(update_user)
+cli.add_command(delete_user)
 
 if __name__ == '__main__':
     cli()
