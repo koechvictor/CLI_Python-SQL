@@ -80,6 +80,20 @@ def update_book(book_id, title, author_name):
     session.close()
 
 @click.command()
+@click.option('--book_id', prompt='Book ID', help='The ID of the book.')
+def delete_book(book_id):
+    """Delete a book."""
+    session = SessionLocal()
+    book = session.query(Book).filter(Book.id == book_id).first()
+    if book:
+        session.delete(book)
+        session.commit()
+        click.echo(f'Deleted book ID {book_id} Title: {book.title} written by {book.author_name}.')
+    else:
+        click.echo(f'Book ID {book_id} not found.')
+    session.close()
+
+@click.command()
 def report_available_books():
     """Generate report of available books."""
     session = SessionLocal()
@@ -97,6 +111,7 @@ cli.add_command(add_book)
 #cli.add_command(add_author)
 cli.add_command(update_book)
 cli.add_command(report_available_books)
+cli.add_command(delete_book)
 
 if __name__ == '__main__':
     cli()
