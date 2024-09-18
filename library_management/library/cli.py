@@ -106,12 +106,24 @@ def report_available_books():
         click.echo("No books are currently available.")
     session.close()
 
+@click.command()
+@click.option('--name', prompt='User name', help='The name of the user.')
+def add_user(name):
+    """Add a new user."""
+    session = SessionLocal()
+    user = User(name=name)
+    session.add(user)
+    session.commit()
+    session.close()
+    click.echo(f'Added user {name}.')
+
 cli.add_command(init)
 cli.add_command(add_book)
 #cli.add_command(add_author)
 cli.add_command(update_book)
 cli.add_command(report_available_books)
 cli.add_command(delete_book)
+cli.add_command(add_user)
 
 if __name__ == '__main__':
     cli()
