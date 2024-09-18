@@ -1,6 +1,6 @@
 import click
-from .database import SessionLocal, init_db
-from .models import Base, Book, Member, Borrow
+from library.database import SessionLocal, init_db
+from library.models import Author, Book, User, Borrow
 
 @click.group()
 def cli():
@@ -53,10 +53,24 @@ def update_book(book_id, title, author):
         click.echo(f"Book ID {book_id} not found.")
     db.close()
 
+@click.command()
+def report_available_books():
+    """Generate report of available books."""
+    session = SessionLocal()
+    available_books = session.query(Book).filter(Book.is_borrowed == False).all()
+    if available_books:
+        click.echo("Available Books:")
+        for book in available_books:
+            click.echo(f'ID: {book.id}, Title: {book.title},Author: {book.author.name}')
+    else:
+        click.echo("No books are currently available.")
+    session.close()
+
 cli.add_command(init)
 cli.add_command(add_book)
 cli.add_command(add_author)
 cli.add_command(update_book)
+cli.add_command(report_available_books)
 
 if __name__ == '__main__':
     cli()
