@@ -126,9 +126,21 @@ def borrow_book(book_id, user_id):
         click.echo(f'Book ID: {book_id}, Title: {book.title} borrowing was unsuccessfull, book may have been borrowed or does not exist')
     session.close()
 
+@click.command()
+def list_of_borrowed_books():
+    """Generate report of borrowed books."""
+    session = SessionLocal()
+    borrowed_books = session.query(Book).filter(Book.is_borrowed == True).all()
+    if borrowed_books:
+        click.echo("Borrowed Books:")
+        for book in borrowed_books:
+            click.echo(f'ID: {book.id}, Title: {book.title}')
+    else:
+        click.echo("No books are currently borrowed.")
+    session.close()
+
 cli.add_command(init)
 cli.add_command(add_book)
-#cli.add_command(add_author)
 cli.add_command(update_book)
 cli.add_command(report_available_books)
 cli.add_command(delete_book)
@@ -136,6 +148,7 @@ cli.add_command(add_user)
 cli.add_command(update_user)
 cli.add_command(delete_user)
 cli.add_command(borrow_book)
+cli.add_command(list_of_borrowed_books)
 
 if __name__ == '__main__':
     cli()
