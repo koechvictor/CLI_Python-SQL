@@ -108,6 +108,24 @@ def delete_user(user_id):
         click.echo(f'User ID {user_id} not found.')
     session.close()
 
+@click.command()
+@click.option('--book_id', prompt='Book ID', help='The ID of the book.')
+@click.option('--user_id', prompt='User ID', help='The ID of the user.')
+def borrow_book(book_id, user_id):
+    """Borrow a book."""
+    session = SessionLocal()
+    book = session.query(Book).filter(Book.id == book_id).first()
+    user = session.query(User).filter(User.id == user_id).first()
+    if book and user and not book.is_borrowed:
+        borrow = Borrow(book_id=book_id, user_id=user_id )
+        book.is_borrowed = True
+        session.add(borrow)
+        session.commit()
+        click.echo(f'Book ID {book_id}, Title: {book.title} borrowing by User Id {user_id} Name: {user.name} was successfull')
+    else:
+        click.echo(f'Book ID: {book_id}, Title: {book.title} borrowing was unsuccessfull, book may have been borrowed or does not exist')
+    session.close()
+
 cli.add_command(init)
 cli.add_command(add_book)
 #cli.add_command(add_author)
@@ -117,6 +135,7 @@ cli.add_command(delete_book)
 cli.add_command(add_user)
 cli.add_command(update_user)
 cli.add_command(delete_user)
+cli.add_command(borrow_book)
 
 if __name__ == '__main__':
     cli()
