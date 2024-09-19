@@ -1,4 +1,5 @@
 import click
+from datetime import datetime
 from library.database import SessionLocal, init_db
 from library.models import Book, User, Borrow
 
@@ -139,6 +140,22 @@ def list_of_borrowed_books():
         click.echo("No books are currently borrowed.")
     session.close()
 
+@click.command()
+@click.option('--book_id', prompt='Book ID', help='The ID of the book.')
+def return_book(book_id):
+    """Borrow a book"""
+    session = SessionLocal()
+    borrow = session.query(Borrow).filter(Borrow.book_id == book_id, Borrow.return_date == None).first()
+    if borrow:
+        borrow.return_date = datetime.utcnow()
+        book = session.query(Book).filter(Book.id == book_id).first()
+        book.is_borrowed = False
+        session.commit()
+        click.echo(f'Returned book ID {book_id}: Title:{book.title}')
+    else:
+        click.echo(f'Book {book_id} not found or not borrowed.')
+    session.close()
+
 cli.add_command(init)
 cli.add_command(add_book)
 cli.add_command(update_book)
@@ -149,6 +166,7 @@ cli.add_command(update_user)
 cli.add_command(delete_user)
 cli.add_command(borrow_book)
 cli.add_command(list_of_borrowed_books)
+cli.add_command(return_book)
 
 if __name__ == '__main__':
     cli()
