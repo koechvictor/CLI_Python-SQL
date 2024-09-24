@@ -143,7 +143,7 @@ def list_of_borrowed_books():
 @click.command()
 @click.option('--book_id', prompt='Book ID', help='The ID of the book.')
 def return_book(book_id):
-    """Borrow a book"""
+    """Return a book"""
     session = SessionLocal()
     borrow = session.query(Borrow).filter(Borrow.book_id == book_id, Borrow.return_date == None).first()
     if borrow:
