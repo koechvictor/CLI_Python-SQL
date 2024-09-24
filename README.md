@@ -109,9 +109,3 @@ python -m library.cli list_of_borrowed_books
 python -m library.cli report_available_books
 
 ```
-
-### Video demonstration of the project
-
-```sh
-https://drive.google.com/file/d/14cwFTkLdPefXvWbJhXmX9F5u5B8zuAHn/view?usp=sharing
-```
